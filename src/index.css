@@ -3,3 +3,12 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap');
+
+@layer components {
+    .card {
+        @apply shadow-lg rounded-lg overflow-hidden hover:scale-110 ease-in duration-300 bg-white text-lightModeText
+    }
+    .p {
+        @apply flex sm:text-sm py-1
+    }
+}
