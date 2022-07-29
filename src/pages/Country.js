@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
+import { useTheme } from "../hooks/useTheme"
 
 export default function Country() {
     const [country, setCountry] = useState(null)
     const [isPending, setIsPending] = useState(true)
     const { id } = useParams()
+    const { mode } = useTheme()
 
     const fetchData = async () => {
         setIsPending(true)
@@ -22,12 +24,12 @@ export default function Country() {
     //{!isPending && country.borders && console.log('omo')};
 
   return ( 
-    <div className="h-screen">
-        {isPending && <p className='w-screen h-screen text-center text-lg mt-52 font-bold'>Loading...</p>}
+    <div className={`h-screen ${mode}`}>
+        {isPending && <p className='w-screen h-screen text-center text-lg mt-52 font-bold dark:text-white'>Loading...</p>}
         {!isPending &&
         <div>
         <div>
-            <Link className=" cursor-pointer flex shadow-lg rounded w-20 ml-3 my-10 items-center px-5 hover:font-bold" to='/'>
+            <Link className=" dark:bg-darkModeElements cursor-pointer flex shadow-lg rounded w-20 ml-3 my-10 items-center px-5 hover:font-bold" to='/'>
                 <p>Back</p>
             </Link>
         </div>

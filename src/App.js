@@ -3,10 +3,13 @@ import CountriesList from "./pages/CountriesList";
 import Navbar from "./components/Navbar";
 import NotFoundPage from "./pages/NotFoundPage";
 import Country from "./pages/Country";
+import { useTheme } from "./hooks/useTheme";
 
 function App() {
+  const { mode } = useTheme();
+
   return (
-    <div className="App bg-lightModeBg">
+    <div className={`App ${mode}`}>
       <BrowserRouter>
         <Navbar />
         <Routes>

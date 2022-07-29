@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom"
+import { useTheme } from "../hooks/useTheme"
 
 
 export default function Countrycard({ countries }) {
+  const { mode } = useTheme()
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-10 px-10 py-5">
+    <div className={`grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-10 px-10 py-5 ${mode}`}>
        {countries.map((country) => {
                return <Link key={country.name.official} className="card"  to={`/country/${country.name.common}`}>
               
