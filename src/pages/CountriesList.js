@@ -6,6 +6,7 @@ import Filterbar from '../components/Filterbar'
 export default function CountriesList(props) {
   const countries = props.countries;
   const isPending = props.isPending;
+  const error = props.error;
 
 
   return (
@@ -14,6 +15,7 @@ export default function CountriesList(props) {
             <Filterbar searchByCountry={props.searchByCountry} fetchByRegion={props.fetchByRegion} />
             {isPending && <p className='w-screen h-screen text-center text-lg mt-52 font-bold'>Loading...</p>}
             {countries && <Countrycard countries={countries} />}
+            {error && <p className='w-screen h-screen text-center text-lg mt-52 font-bold'>{error.message}</p>}
         </ul>
     </div>
   )

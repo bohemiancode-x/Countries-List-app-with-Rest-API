@@ -12,6 +12,7 @@ function App() {
   const { mode } = useTheme();
   const [isPending, setIsPending] = useState(true);
   const [countries, setCountries] = useState(null)
+  const [error, setError] = useState(null)
  
 
   useEffect(() => {
@@ -26,6 +27,7 @@ function App() {
       setCountries(data)
     } catch (err) {
       console.log(err);
+      setError(err)
     }
   }
 
@@ -39,6 +41,7 @@ function App() {
         setIsPending(false);
       } catch (err) {
         console.log(err);
+        setError(err)
       }
     })();
   };
@@ -52,11 +55,16 @@ function App() {
       (async () => {
         try {
           const res = await fetch(`${url}/name/${country}`);
+          if(res.status == 404) {
+            throw new Error('cannot fetch countries')
+          }
           const data = await res.json();
           setCountries(data)
           setIsPending(false);
         } catch (err) {
           console.log(err);
+          setIsPending(false)
+          setError(err)
         }
       })();
     }
@@ -70,6 +78,7 @@ function App() {
           <Route path="/" element={<CountriesList
                                      countries={countries}
                                       isPending={isPending}
+                                        error={error}
                                         fetchByRegion={fetchByRegion}
                                           searchByCountry={searchByCountry}
                                         />
