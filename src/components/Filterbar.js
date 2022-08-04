@@ -2,34 +2,36 @@ import React, { useState } from 'react'
 import { useTheme } from '../hooks/useTheme'
 
 export default function Filterbar(props) {
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState("")
+    const [selectedRegion, setSelectedRegion] = useState("")
     const { mode } = useTheme()
 
-    
-    const handleChange = () => {
-        
+    const handleSearch = e => {
+        props.searchByCountry(e)
+        setSearch(e)
+        setSelectedRegion("")
     }
-    const handleSubmit = e => {
-        e.preventDefault()
-        if(search != ''){props.func(search)}
-        setSearch('')
+    const handleSelect = (e) => {
+        
+        props.fetchByRegion(e);
+        setSelectedRegion(e);
+        setSearch("")
     }
 
   return (
     <div className={`flex justify-between p-5 ${mode}`}>
-        <form onSubmit={handleSubmit} className='searchform dark:bg-darkModeElements'>
+        <form  className='searchform dark:bg-darkModeElements'>
             <img className='opacity-50 h-5' src={mode === 'light' ? "./images/search_black.svg" : "./images/search_white.svg"} alt="search" />
             <input className='text-sm w-full focus:outline-none dark:bg-darkModeElements'
              type="text" 
              placeholder='Search for a country...'
-             onKeyUp={handleChange}
-             onChange={(e) => setSearch(e.target.value)}
+             onChange={(e) => handleSearch(e.target.value)}
              value={search}            
              />
         </form>
 
         <form className='w-32 sm:w-48 pr-1 overflow-hidden rounded shadow dark:bg-darkModeElements'>
-            <select className='w-full p-3 dark:bg-darkModeElements' name="countries">
+            <select onChange={(e) => {handleSelect(e.target.value)}} value={selectedRegion} className='w-full p-3 dark:bg-darkModeElements' name="countries">
                 <option value="" hidden selected disabled>Filter by Region</option>
                 <option value="Africa">Africa</option>
                 <option value="America">America</option>

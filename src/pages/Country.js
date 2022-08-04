@@ -1,30 +1,71 @@
 import { useEffect, useState } from "react"
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useNavigate } from "react-router-dom"
 import { useTheme } from "../hooks/useTheme"
 
 export default function Country() {
     const [country, setCountry] = useState(null)
     const [isPending, setIsPending] = useState(true)
+    const [borderCountries, setBorderCountries] = useState(null)
     const { id } = useParams()
     const { mode } = useTheme()
+    const url = "https://restcountries.com/v3.1/"
+    let navigate = useNavigate();
 
     const fetchData = async () => {
-        setIsPending(true)
-        const res = await fetch('https://restcountries.com/v3.1/name/' + id)
-        const data = await res.json()
-        setCountry(data[0])
-        setIsPending(false)
+        try {
+            setIsPending(true)
+            const res = await fetch(`${url}/name/${id}`)
+            const data = await res.json()
+            setCountry(data[0])
+            setIsPending(false)
+            getCountryBorders(data[0].borders)
+            
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     useEffect(() => {
         fetchData()
     },[]);
 
+    const getCountryBorders = async (countries) => {
+        let countryNames = [];
 
-    //{!isPending && country.borders && console.log('omo')};
+        try {
+            const res = await fetch(`${url}/alpha?codes=${countries.join(",")}`)
+            const data = await res.json()
+            data.forEach((country) => {
+                countryNames.push(country.name.common);
+            });
+        } catch (err) {
+            console.log(err);
+        }
+        setBorderCountries(countryNames);
+    }
+
+    const fetchByBorder = (page) => {
+        navigate(`/country/${page}`);
+
+        //fetchData();
+        // setIsPending(true);
+
+        (async () => {
+        try {
+            const res = await fetch(`${url}/name/${page}?fullText=true`)
+            const data = await res.json()
+            setCountry(data[0]);
+            setIsPending(false)
+            getCountryBorders(data[0].borders)
+        } catch (err) {
+            console.log(err);
+        }
+        })();
+    }
+
 
   return ( 
-    <div className={`h-screen ${mode}`}>
+    <div className={`h-full ${mode}`}>
         {isPending && <p className='w-screen h-screen text-center text-lg mt-52 font-bold dark:text-white'>Loading...</p>}
         {!isPending &&
         <div>
@@ -56,7 +97,9 @@ export default function Country() {
 
                 <div className="p mt-16">
                     <p className="font-bold">Border Countries:</p>
-                    <div className="grid grid-cols-3">{country.borders ? Object.values(country.borders).map(b => {return <p className="pr-1 shadow-inner shadow-gray-400 rounded w-20 ml-3 py-1 my-1 text-center" key={b}>{b}</p>}) : <p className="ml-1">unavailable</p>}</div>
+                    <div className="grid grid-cols-3">{country.borders ? borderCountries?.map(b => {return <p className="pr-1 shadow-inner shadow-gray-400 rounded w-20 ml-3 py-1 my-1 text-center hover:cursor-pointer" key={b}
+                        onClick={() => fetchByBorder(b)}
+                    >{b}</p>}) : <p className="ml-1">unavailable</p>}</div>
                 </div>
             </div>
         </div>
