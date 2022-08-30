@@ -7,8 +7,8 @@ export default function Countrycard({ countries }) {
 
   return (
     <div className={`grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-10 px-10 py-5 ${mode}`}>
-       {countries.map((country) => {
-               return <Link key={country.name.official} className="card"  to={`/country/${country.name.common}`}>
+       {countries.map((country) => (
+                <Link key={country.name.official} className="card dark:bg-darkModeElements dark:text-white"  to={`/country/${country.name.common}`}>
               
                     <img className="h-1/2 w-full" src={country.flags.png} alt="" />
                     
@@ -20,7 +20,7 @@ export default function Countrycard({ countries }) {
                     </div>
                
                </Link>
-            })}
+            ))}
             
     </div>
   )

@@ -14,14 +14,12 @@
     .App {
         @apply min-h-screen ;
     }
-    .light {
-        @apply bg-lightModeBg text-lightModeText
-    }
+
     .dark {
         @apply bg-darkModeBg text-white
     }
     .card {
-        @apply shadow-lg rounded-lg overflow-hidden hover:scale-110 ease-in duration-300 bg-white text-lightModeText dark:bg-darkModeElements dark:text-white
+        @apply shadow-lg rounded-lg overflow-hidden hover:scale-105 ease-in bg-white text-lightModeText dark:bg-darkModeElements dark:text-white
     }
     .p {
         @apply flex sm:text-sm py-1
